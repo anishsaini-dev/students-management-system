@@ -1,0 +1,124 @@
+{% extends 'students/base.html' %}
+
+{% block title %}All Students{% endblock %}
+
+{% block content %}
+
+<!-- Stats Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card bg-1">
+            <h3>{{ stats.total }}</h3>
+            <p class="mb-0"><i class="bi bi-people-fill"></i> Total Students</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-2">
+            <h3>{{ stats.active }}</h3>
+            <p class="mb-0"><i class="bi bi-person-check"></i> Active Students</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-3">
+            <h3>{{ stats.avg_marks|floatformat:1 }}</h3>
+            <p class="mb-0"><i class="bi bi-bar-chart"></i> Average Marks</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card bg-4">
+            <h3>{{ stats.top_marks }}</h3>
+            <p class="mb-0"><i class="bi bi-trophy"></i> Highest Marks</p>
+        </div>
+    </div>
+</div>
+
+<!-- Search & Filter -->
+<div class="card mb-4 p-3">
+    <form method="GET" class="row g-2">
+        <div class="col-md-6">
+            <input type="text" name="q" value="{{ query }}" class="form-control"
+                   placeholder="🔍 Search by name, roll no, or email...">
+        </div>
+        <div class="col-md-4">
+            <select name="course" class="form-control">
+                <option value="">-- All Courses --</option>
+                {% for code, label in courses %}
+                    <option value="{{ code }}" {% if selected_course == code %}selected{% endif %}>
+                        {{ label }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100">Search</button>
+        </div>
+    </form>
+</div>
+
+<!-- Students Table -->
+<div class="card p-3">
+    <h5 class="mb-3">📋 All Students</h5>
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Roll No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in students %}
+                <tr>
+                    <td><strong>{{ s.roll_no }}</strong></td>
+                    <td>{{ s.name }}</td>
+                    <td>{{ s.email }}</td>
+                    <td><span class="badge bg-info">{{ s.course }}</span></td>
+                    <td>{{ s.marks }}</td>
+                    <td>
+                        <span class="badge
+                            {% if s.grade == 'A+' or s.grade == 'A' %}bg-success
+                            {% elif s.grade == 'B' %}bg-primary
+                            {% elif s.grade == 'C' %}bg-warning
+                            {% else %}bg-danger{% endif %}">
+                            {{ s.grade }}
+                        </span>
+                    </td>
+                    <td>
+                        {% if s.is_active %}
+                            <span class="badge bg-success">Active</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'student_detail' s.pk %}" class="btn btn-sm btn-info" title="View">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="{% url 'student_update' s.pk %}" class="btn btn-sm btn-warning" title="Edit">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="{% url 'student_delete' s.pk %}" class="btn btn-sm btn-danger" title="Delete">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted py-4">
+                        😕 Koi student record nahi mila.
+                        <a href="{% url 'student_create' %}">Pehla student add karo</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

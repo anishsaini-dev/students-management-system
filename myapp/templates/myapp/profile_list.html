@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Profiles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 { color: #333; }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 220px;
+        }
+        .card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #4CAF50;
+        }
+        .card h3 {
+            margin-top: 15px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>📸 Mere Profiles</h1>
+    
+    <div class="container">
+        {% for profile in profiles %}
+            <div class="card">
+                {% if profile.image %}
+                    <img src="{{ profile.image.url }}" alt="{{ profile.name }}">
+                {% else %}
+                    <p>No image</p>
+                {% endif %}
+                <h3>{{ profile.name }}</h3>
+            </div>
+        {% empty %}
+            <p>Abhi koi profile nahi hai. Admin se add karein.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>
