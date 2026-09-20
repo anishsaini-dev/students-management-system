@@ -7,7 +7,7 @@ class StudentForm(forms.ModelForm):
         fields = ['roll_no', 'name', 'email', 'age', 'course',
                   'marks', 'phone', 'address', 'is_active']
         widgets = {
-            'roll_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. BCA001'}),
+            'roll_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g. 22edics001'}),
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Full Name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'student@email.com'}),
             'age': forms.NumberInput(attrs={'class': 'form-control', 'min': 15, 'max': 60}),
